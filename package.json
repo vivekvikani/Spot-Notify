@@ -4,7 +4,8 @@
   "description": "Display MacOSX notfications for spotify music",
   "main": "index.js",
   "scripts": {
-    "test": "echo testing"
+    "test": "echo testing",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
