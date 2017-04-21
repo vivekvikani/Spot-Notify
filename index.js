@@ -91,20 +91,7 @@ function setTrackDetails(album, album_artist, name, artwork, popularity, track_i
 
 function notify() {
     if ((!isNotified || oldTrackName != trackName) && trackName !== undefined) {
-        getAlbumArt(function (err, ablumArtUrl) {
-            console.log('Notify Called');
-            notifier.notify({
-                title: trackName,
-                subtitle: trackAlbum,
-                contentImage: path.join(__dirname, '/img/spotify-logo.png'),
-                icon: albumArtUrl,
-                message: trackAlbumArtist + ' ~ Popularity: ' + trackPopularity,
-                sender: 'com.spotify.client',
-                group: 'com.spotify.client',
-                actions: 'Skip'
-            });
-        });
-        oldTrackName = trackName;
+        getAlbumArt();
     }
 }
 
@@ -118,6 +105,17 @@ function getAlbumArt() {
         //console.log('error:', error); // Print the error if one occurred 
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received 
         console.log('Album art URL:', body.album.images[2].url);
-        return body.album.images[2].url;
+        
+        notifier.notify({
+            title: trackName,
+            subtitle: trackAlbum,
+            contentImage: path.join(__dirname, '/img/spotify-logo.png'),
+            icon: body.album.images[2].url,
+            message: trackAlbumArtist + ' ~ Popularity: ' + trackPopularity,
+            sender: 'com.spotify.client',
+            group: 'com.spotify.client',
+            actions: 'Skip'
+        });
+        oldTrackName = trackName;
     });
 }
